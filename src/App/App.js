@@ -11,6 +11,7 @@ import AddNote from '../AddNote/AddNote';
 import NotefulError from '../NotefulError/NotefulError';
 import { findNote, findFolder } from '../notes-helpers';
 import './App.css';
+import PropTypes from 'prop-types';
 
 class App extends Component {
   state = {
@@ -187,3 +188,11 @@ class App extends Component {
 }
 
 export default withRouter(App);
+
+AddNote.propTypes = {
+  name: PropTypes.string
+};
+
+AddFolder.propTypes = {
+  name: PropTypes.string
+}
