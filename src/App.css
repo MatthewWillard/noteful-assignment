@@ -1,0 +1,34 @@
+.App {
+  font-family: Helvetica;
+}
+
+.container {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 30vw auto;
+  grid-gap: 0;
+  justify-items: stretch;
+}
+
+.sidebar {
+  border-right: 1px solid black;
+  width: 30vw;
+  padding: 20px 0;
+}
+
+.mainContent {
+  padding: 40px 0;
+}
+
+.button:hover,
+.deleteNoteButton:hover {
+  color: white;
+}
+
+.folderLink:hover {
+    color: white;
+    background-color: slategray;
+}
+

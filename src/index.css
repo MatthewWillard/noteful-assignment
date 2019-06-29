@@ -1,13 +1,83 @@
-* {
-  box-sizing: border-box;
+
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
 }
 
-body {
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.button,
+.deleteNoteButton {
+    background-color: white;
+    margin: 0 10px 0 20px;
+    font-size: 16px;
+    line-height: 20px;
+    border: 1px solid black;
+    padding: 10px 18px;
+	cursor: pointer;
+	min-width: 100px;
+}
+
+#sidebar-button {
+	margin: 0 10px;
+	text-decoration: none;
+	color: black;
+}
+
+.deleteNoteButton {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+.formContainer {
+    font-size: 30px;
+    margin: 30px 10%;
+    padding: 20px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.label {
+    font-size: 22px;
+}
+
+#formButtons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.formInputs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.formInputs > input,
+.formInputs > select,
+.formInputs > textarea {
+    padding: 10px 18px;
+    margin: 20px 10px;
+    font-size: 16px;
+    line-height: 20px;
 }

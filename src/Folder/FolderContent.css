@@ -1,0 +1,31 @@
+.mainContentUl {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .mainContentLi {
+    border: 1px solid black;
+    margin: 20px;
+    padding: 15px;
+    position: relative;
+  }
+  
+  .deleteNoteButton {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+  }
+  
+  .noteName,
+  .noteModified {
+    margin: 10px 0;
+  }
+  
+  .noteName {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-decoration: none;
+    color: black;
+  }

@@ -1,0 +1,9 @@
+    
+.sidebar {
+  flex: 1; 
+  padding: 1em; 
+}
+
+.active {
+  background: lightblue; 
+}

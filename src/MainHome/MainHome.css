@@ -1,0 +1,55 @@
+.folderUl {
+    margin: 40px 10px;
+  }
+  
+  .folderLi {
+    list-style: none;
+    font-size: 16px;
+    line-height: 20px;
+    margin: 10px auto;
+    border: 1px solid black;
+  }
+  
+  .folderLink {
+    padding: 18px;
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+    display: block;
+  }
+  
+  .active {
+    color: white;
+    background-color: slategrey;
+  }
+  
+  .mainContentUl {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .mainContentLi {
+    border: 1px solid black;
+    margin: 20px;
+    padding: 15px;
+    position: relative;
+  }
+  
+  .noteHeader {
+    font-weight: bold;
+    font-size: 18px;
+  }
+  
+  .noteName,
+  .noteModified {
+    margin: 10px 0;
+  }
+  
+  .noteName {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-decoration: none;
+    color: black;
+  }

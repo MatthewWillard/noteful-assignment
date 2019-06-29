@@ -1,123 +1,166 @@
-import React, { Component } from 'react'
-import NotefulForm from '../NotefulForm/NotefulForm'
-//import config from '../config'
-import NoteValidationError from './NoteValidationError'
-//import NotefulError from '../NotefulError/NotefulError'
-//import PropTypes from 'prop-types';
-import './AddNote.css'
-import ApiContext from '../ApiContext';
+import React from "react";
+import PropTypes from "prop-types";
+import NotefulContext from "../NotefulContext";
+import ValidationError from "./ValidationError";
+import config from '../config'
 
-
-export default class AddNote extends Component {
-  constructor(props){
+class AddNote extends React.Component {
+  constructor(props) {
     super(props);
     this.state = {
+      note_name: "",
       nameValid: false,
-      name: '',
       validationMessages: {
-        name: '',
+        name: ""
       }
+    };
+    this.note_name = React.createRef();
+  }
+
+  static contextType = NotefulContext;
+
+  handleSubmit = e => {
+    e.preventDefault();
+    const note = {
+      note_name: e.target.note_name.value,
+      folder_id: e.target.folderId.value,
+      content: e.target.content.value
+    };
+    this.updateName(note.note_name);
+    if (this.state.nameValid) {
+      console.log(note)
+      fetch(`${config.API_ENDPOINT}/notes`, {
+        method: "POST",
+        body: JSON.stringify(note),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+        .then(res => {
+          if (!res.ok) {
+            return res.json().then(error => {
+              throw error;
+            });
+          }
+          return res.json();
+        })
+        .then(note => {
+          this.context.addNote(note);
+          this.props.history.push("/");
+        })
+        .catch(error => {
+          console.error({ error });
+          alert( `something went wrong: ${error.message}` )
+        });
     }
-  }
-  static defaultProps = {
-    history: {
-      push: () => { }
-    },
-  }
-  static contextType = ApiContext;
+  };
+
+  handleClickCancel = () => {
+    this.props.history.push("/");
+  };
 
   validateName(fieldValue) {
-    const fieldErrors = {...this.state.validationMessages};
+    const fieldErrors = { ...this.state.validationMessages };
     let hasError = false;
 
     fieldValue = fieldValue.trim();
-    if(fieldValue.length === 0) {
-      fieldErrors.name = 'Name is required';
+
+    if (fieldValue.length === 0) {
+      fieldErrors.name = "Note Name is Required";
       hasError = true;
+      this.name.current.focus();
+    } else {
+      fieldErrors.name = "";
+      hasError = false;
     }
+
     this.setState({
       validationMessages: fieldErrors,
       nameValid: !hasError
-    }, this.formValid );
-}
-
-  formValid(){
-    this.setState({
-      formValid: this.state.nameValid
     });
   }
-  updateName(name){
-    this.setState({name}, ()=>{this.validateName(name)});
-  }
-  handleSubmit = e => {
-    e.preventDefault()
-    const note = {
-      name: e.target['note-name'].value,
-      content: e.target['note-content'].value,
-      folderId: e.target['note-folder-id'].value,
-      modified: new Date(),
-    }
-    fetch('http://localhost:9090/notes/', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json'
-      },
-      body: JSON.stringify(note)
-    })
-    .then(res => {
-      if(!res.ok)
-        return res.json().then(e => Promise.reject(e))
-      return res.json()
-    })
-    .then(note => {
-      this.context.addNote(note)
-      this.props.history.push(`./note/${note.id}`)
-    })
-    .catch(error => {
-      console.log('add note ', {error})
-    })
-    .finally( alert("Note Added!") )
+
+  updateName(noteName) {
+    this.setState({ noteName }, () => {
+      this.validateName(noteName);
+    });
   }
 
   render() {
-    const { folders=[] } = this.context
     return (
-      <section className='AddNote'>
-        <h2>Create a note</h2>
-        <NotefulForm onSubmit={this.handleSubmit}>
-          <div className='field'>
-            <label htmlFor='note-name-input'>
-              Name
+      <section className="formContainer">
+        <h2>Create a New Note</h2>
+        <hr />
+        <form className="form" onSubmit={this.handleSubmit}>
+          <div className="formInputs">
+            <label htmlFor="folderId" className="label">
+              Folder:
             </label>
-            <input type='text' id='note-name-input' name='note-name' onChange={e => this.updateName(e.target.value)} required/>
-            <NoteValidationError className='validationError' hasError={!this.state.name} message={this.state.validationMessages.name}></NoteValidationError>
-          </div>
-          <div className='field'>
-            <label htmlFor='note-content-input'>
-              Content
-            </label>
-            <textarea id='note-content-input' name='note-content' />
-          </div>
-          <div className='field'>
-            <label htmlFor='note-folder-select'>
-              Folder
-            </label>
-            <select id='note-folder-select' name='note-folder-id' required> 
-              <option value={null}>...</option>
-              {folders.map(folder =>
-                <option key={folder.id} value={folder.id}>
-                  {folder.name}
-                </option>
-              )}
+            <select id="folderId" aria-label="Select a folder">
+              {this.context.folders.map(folder => {
+                return (
+                  <option key={folder.id} value={folder.id}>
+                    {folder.folder_name}
+                  </option>
+                );
+              })}
             </select>
           </div>
-          <div className='buttons'>
-            <button type='submit' >
-              Add new note
+
+          <div className="formInputs">
+            <label className="label" htmlFor="note_name">
+              Note Name:
+            </label>
+            <input
+              type="text"
+              name="note-name"
+              id="note_name"
+              placeholder="New Note"
+              aria-required="true"
+              aria-label="Enter a name for your new note"
+              ref={this.note_name}
+            />
+            <ValidationError
+              hasError={!this.state.nameValid}
+              message={this.state.validationMessages.name}
+            />
+          </div>
+
+          <div className="formInputs">
+            <label className="label" htmlFor="content">
+              Note Content:
+            </label>
+            <textarea name="content" id="content" aria-label="Enter content for your new note" />
+          </div>
+
+          <div id="formButtons">
+            <button
+              className="button"
+              type="button"
+              onClick={this.handleClickCancel}
+            >
+              Cancel
+            </button>{" "}
+            <button className="button" type="submit">
+              Save
             </button>
           </div>
-        </NotefulForm>
+        </form>
       </section>
-    )
+    );
   }
 }
+
+AddNote.defaultProps = {
+  history: {
+    push: () => []
+  }
+};
+
+AddNote.propType = {
+  history: PropTypes.shape({
+    push: PropTypes.func
+  })
+};
+
+export default AddNote;
