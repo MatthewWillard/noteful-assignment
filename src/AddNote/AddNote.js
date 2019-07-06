@@ -68,7 +68,6 @@ class AddNote extends React.Component {
     if (fieldValue.length === 0) {
       fieldErrors.name = "Note Name is Required";
       hasError = true;
-      this.name.current.focus();
     } else {
       fieldErrors.name = "";
       hasError = false;
