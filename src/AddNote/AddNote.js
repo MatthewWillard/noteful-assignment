@@ -11,7 +11,8 @@ class AddNote extends React.Component {
       note_name: "",
       nameValid: false,
       validationMessages: {
-        name: ""
+        name: "",
+        context: ""
       }
     };
     this.note_name = React.createRef();
@@ -79,6 +80,27 @@ class AddNote extends React.Component {
     });
   }
 
+  validateContext(contextValue) {
+    const contextErrors = { ...this.state.validationMessages };
+    let hasError = false;
+
+    contextValue = contextValue.trim();
+
+    if (contextValue.length === 0) {
+      contextErrors.context = "Context is Required";
+      hasError = true;
+    } else {
+      contextErrors.name = "";
+      hasError = false;
+    }
+
+    this.setState({
+      validationMessages: contextErrors,
+      nameValid: !hasError
+    });
+  }
+
+
   updateName(noteName) {
     this.setState({ noteName }, () => {
       this.validateName(noteName);
@@ -129,7 +151,17 @@ class AddNote extends React.Component {
             <label className="label" htmlFor="content">
               Note Content:
             </label>
-            <textarea name="content" id="content" aria-label="Enter content for your new note" />
+            <input 
+              type="text"
+              name="content" 
+              id="content"
+              aria-required="true" 
+              aria-label="Enter content for your new note" 
+              />
+              <ValidationError
+              hasError={!this.state.nameValid}
+              message={this.state.validationMessages.context}
+            />
           </div>
 
           <div id="formButtons">
