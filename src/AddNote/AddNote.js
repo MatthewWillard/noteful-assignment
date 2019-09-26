@@ -22,6 +22,7 @@ class AddNote extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
+    e.stopPropagation();
     const note = {
       note_name: e.target.note_name.value,
       folder_id: e.target.folderId.value,
@@ -29,7 +30,6 @@ class AddNote extends React.Component {
     };
     this.updateName(note.note_name);
     if (this.state.nameValid) {
-      console.log(note)
       fetch(`${config.API_ENDPOINT}/notes`, {
         method: "POST",
         body: JSON.stringify(note),
