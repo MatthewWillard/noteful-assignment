@@ -20,6 +20,14 @@ class AddNote extends React.Component {
 
   static contextType = NotefulContext;
 
+  onChange: {
+    this.setState({typed: event.target.value});
+  },
+  
+  // onChange = e => {
+  //   this.updateName();
+  // };
+
   handleSubmit = e => {
     e.preventDefault();
     e.stopPropagation();
